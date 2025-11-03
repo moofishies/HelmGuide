@@ -1,0 +1,15 @@
+# I am a YAML comment, and I will remain in the generated YAML
+{{- /* I am a GO comment, and I will NOT remain*/}}
+test: {{ lower .Values.test }}
+labels:
+  app: {{ .Release.Name }}
+  chart: {{ .Chart.Name }}
+  {{- if eq .Values.environment "Production" }}
+  environment: production 
+  build: stable
+  public-ingress: True
+  {{- else }}
+  environment: dev
+  build: alpha
+  public-ingress: False
+  {{- end }}
