@@ -1,21 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: {{ .Release.Name }}-{{ .Chart.Name }} # This uses the name specified during helm install/upgrade, and then the name of the chart
   labels:
-    app: nginx
+    app: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  selector: 
+  selector:
     matchLabels:
-      app: nginx
-  template: 
+      app: {{ .Chart.Name }}
+      release: {{ .Release.Name }}
+  template:
     metadata:
       labels:
         app: nginx
-    spec: 
+        release: {{ .Release.Name }}
+    spec:
       containers:
-      - name: nginx
-        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
-        ports:
-          - containerPort: {{ .Values.containerPorts.http }}
+        - name: nginx
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.containerPorts.http }}
