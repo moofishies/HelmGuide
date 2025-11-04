@@ -1,9 +1,17 @@
+## @param customName allows to set a custome resource name for the deployment
+##        Defaults to {{ .Release.Name }}-{{ .Chart.Name }} if not set
+customName: ''
+
 # Replica count
 # Image, both name and tag
 # Service type and port
 
 ## @param replicaCount The number of Nginx replicas to deploy
 replicaCount: 3
+
+# Used to show that you can use if statements depending on the environment
+## @param environment The deployment environment
+# environment: production
 
 ## Setting for Nginx image
 ##
@@ -25,6 +33,6 @@ containerPorts:
 ## @param service.type The type of Kubernetes service to create
 ## @param service.port The port for the Nginx service
 service:
-  enabled: true
+  enabled: false
   type: ClusterIP
   port: 80
