@@ -20,8 +20,8 @@ spec:
           {{- with .Values.securityContext | default dict}}
           {{- if and (hasKey . "enabled") .enabled }}
           securityContext:
-            runAsUser: {{ .runAsUser }}
-            fsGroup: {{ .fsGroup }}
+            runAsUser: {{ required "securityContext.runasUser is required when setting securityContext and enabled is true" .runAsUser }}
+            fsGroup: {{ required "securityContext.fsGroup is required when setting securityContext and enabled is true" .fsGroup }}
           {{- end }}
           {{- end }}
           {{ if .Values.services | default dict | len }} # if there are services, len will be >1. If not, default to an empty list so that len = 0
