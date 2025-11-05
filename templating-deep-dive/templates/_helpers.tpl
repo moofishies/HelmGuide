@@ -8,3 +8,23 @@ app: {{ .Chart.Name }}
 release: {{ .Release.Name }}
 managed-by: {{ "helm" }}
 {{- end -}}
+
+{{/*Expects an integer or string to be passed as the context*/}}
+{{- define "templating-deep-dive.validators.portRange" -}}
+{{- $sanitizedPort := int . -}}
+{{/*Port validation */}}
+{{- if or (lt $sanitizedPort 1) (gt $sanitizedPort 65535) -}}
+{{- fail (printf "Invalid port number: %d. Port must be between 1 and 65535." $sanitizedPort) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*Expects an object with port and type to be passed as the context*/}}
+{{- define "templating-deep-dive.validators.service" -}}
+{{- include "templating-deep-dive.validators.portRange" .port -}}
+
+{{/*Service type validation*/}}
+{{- $allowedSvcTypes := list "ClusterIP" "NodePort" -}}
+{{- if not (has .type $allowedSvcTypes) -}}
+{{- fail (printf "Invalid service type %s. Supported values are %s" .type ( join ", " $allowedSvcTypes)) -}}
+{{- end -}}
+{{- end -}}
