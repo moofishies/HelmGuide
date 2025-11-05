@@ -17,7 +17,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
-          {{- if .Values.service.enabled }}
+          {{- if .Values.services | default list | len }} # if there are services, len will be >1. If not, default to an empty list so that len = 0
           ports:
             - containerPort: {{ .Values.containerPorts.http }}
           {{- end -}}
