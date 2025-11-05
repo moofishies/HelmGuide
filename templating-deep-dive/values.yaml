@@ -21,6 +21,16 @@ image:
   name: nginx
   tag: "1.29.3"
 
+## Security context settings for Nginx container
+##
+## @param securityContext.enabled Whether to enable security context settings
+## @param securityContext.runAsUser The user ID to run the container as
+## @param securityContext.fsGroup The group ID to run the container as
+securityContext:
+  enabled: true
+  runAsUser: 1000
+  fsGroup: 2000
+
 ## Nginx container ports
 ##
 ## @param containerPorts.http

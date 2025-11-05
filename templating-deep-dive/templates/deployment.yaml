@@ -17,7 +17,14 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
-          {{- if .Values.services | default dict | len }} # if there are services, len will be >1. If not, default to an empty list so that len = 0
+          {{- with .Values.securityContext | default dict}}
+          {{- if and (hasKey . "enabled") .enabled }}
+          securityContext:
+            runAsUser: {{ .runAsUser }}
+            fsGroup: {{ .fsGroup }}
+          {{- end }}
+          {{- end }}
+          {{ if .Values.services | default dict | len }} # if there are services, len will be >1. If not, default to an empty list so that len = 0
           ports:
             - containerPort: {{ .Values.containerPorts.http }}
           {{- end -}}
